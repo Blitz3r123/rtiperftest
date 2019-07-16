@@ -1,9 +1,3 @@
-Posts:
-1. Are Javier's tests run on a singular machine because mine are.
-2. Why are there weird values for latencyCount 1.
-3. Missing publisher values for Kaleem test 5.
-4. Do any configuration parameters affect operating systems? Specifically Linux VS Windows
-5. Which parameters affect performance and how to manipulate these parameters?
 /*
  * (c) 2005-2017  Copyright, Real-Time Innovations, Inc. All rights reserved.
  * Subject to Eclipse Public License v1.0; see LICENSE.md for details.
@@ -123,7 +117,12 @@ public final class PerfTest {
     private boolean testCompleted = false;
     private boolean testCompletedScan = true;
 
-    public String fileName = "";
+    public static String fileName = "";
+
+      // Getter
+      public static String getFileName() {
+    return fileName;
+  }
 
     // Set the default values into the array _scanDataLenSizes vector
     public void set_default_scan_values(){
@@ -355,7 +354,7 @@ public final class PerfTest {
                     System.err.print("Missing <name of file> after -fileName\n");
                     return false;
                 }
-                fileName = argv[i];
+                fileName = argv[i] + ".csv";
             }
             else if ("-sidMultiSubTest".toLowerCase().startsWith(argv[i].toLowerCase()))
             {

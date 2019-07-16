@@ -11,6 +11,7 @@ import com.rti.perftest.IMessagingReader;
 import com.rti.perftest.IMessagingWriter;
 import com.rti.perftest.TestMessage;
 
+import java.io.*;
 //===========================================================================
 
 /**
@@ -228,6 +229,7 @@ import com.rti.perftest.TestMessage;
             if (PerfTest._showCpu) {
                 outputCpu = CpuMonitor.get_cpu_average();
             }
+
             System.out.printf("Length: %1$5d  Packets: %2$8d  Packets/s(ave): %3$7.0f  " +
                     "Mbps(ave): %4$7.1f  Lost: %5$d" + outputCpu + "\n",
                     intervalDataLength + PerfTest.OVERHEAD_BYTES,
@@ -236,6 +238,37 @@ import com.rti.perftest.TestMessage;
                     intervalBytesReceived * 1000000.0 / intervalTime *8.0/1000.0/1000.0,
                     intervalMissingPackets
             );
+
+            //Append overall results to csv file
+            String fileName = PerfTest.getFileName();
+            /*
+            try(PrintWriter pwriter = new PrintWriter(new FileOutputStream(new File(fileName), true)); )
+            {
+            
+            StringBuilder sb = new StringBuilder();
+
+            sb.append('\n');
+            sb.append("Overall Results");
+            sb.append('\n');
+
+            sb.append("Length ,");
+            sb.append("Packets,");
+            sb.append("Packets/s(ave),");
+            sb.append("Mbps(ave),");
+            sb.append("Lost,");
+            sb.append('\n');
+
+            
+
+            pwriter.write(sb.toString());
+            pwriter.flush();
+        }catch(FileNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+        */
+        
+            
+
             System.out.flush();
         }
 
