@@ -1,2 +1,0 @@
-start cmd /k perftest_java.bat -pub -dataLen 4096 -numSubscribers 1 -domain 1 -latencyCount 10000 -numIter 500000 -bestEffort -multicast
-start cmd /k perftest_java.bat -sub -dataLen 4096 -domain 1 -fileName sub1.csv -sidMultiSubTest 1 -bestEffort
