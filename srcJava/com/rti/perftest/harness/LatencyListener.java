@@ -172,6 +172,52 @@ import java.io.*;
                         "\n\n********** New data length is %1$d\n",
                         _lastDataLength + PerfTest.OVERHEAD_BYTES);
             }
+
+            double latency_ave = 0;
+
+            if(_count != 0){
+                latency_ave = (double)_latencySum / (double)_count;    
+            }
+
+            double latency_std = sqrt(
+                (double)_latencySumSquare / (double)_count - (latency_ave * latency_ave));
+
+            try(
+                PrintWriter pwriter = new PrintWriter(new FileOutputStream(new File("pub.csv"), true));
+                ){
+                
+                StringBuilder sb = new StringBuilder();
+                if(pubCount == 0){
+                    sb.append("One-Way Latency(us): ,");
+                    sb.append("Ave(us): ,");
+                    sb.append("Std(us): ,");
+                    sb.append("Min(us): ,");
+                    sb.append("Max(us): ,");
+                    sb.append('\n');
+                    pubCount++;
+                }
+
+                sb.append(latency + ",");
+                sb.append(latency_ave + ",");
+                sb.append(latency_std + ",");
+                sb.append(_latencyMin + ",");
+                sb.append(_latencyMax + ",");
+                sb.append('\n');
+                
+                pwriter.write(sb.toString());
+                pwriter.flush();
+            }catch(FileNotFoundException e){
+                System.out.println(e.getMessage());
+            }
+
+            System.out.printf(
+                "One-Way Latency: %1$6d us  Ave %2$6.0f us  Std %3$6.1f us  Min %4$6d us  Max %5$6d" + outputCpu + "\n",
+                latency,
+                latency_ave,
+                latency_std,
+                _latencyMin,
+                _latencyMax
+            );
         } else if (PerfTest.printIntervals) {
             double latency_ave = (double)_latencySum / (double)_count;
 
