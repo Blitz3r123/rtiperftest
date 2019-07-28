@@ -210,6 +210,8 @@ import java.io.*;
                 System.out.println(e.getMessage());
             }
 
+            System.out.printf("Samples received: %1$6d samples \n", _count);
+
             System.out.printf(
                 "One-Way Latency: %1$6d us  Ave %2$6.0f us  Std %3$6.1f us  Min %4$6d us  Max %5$6d" + outputCpu + "\n",
                 latency,
@@ -251,6 +253,8 @@ import java.io.*;
             }catch(FileNotFoundException e){
                 System.out.println(e.getMessage());
             }
+
+            System.out.printf("Samples received: %1$6d samples \n", _count);
 
             System.out.printf(
                 "One-Way Latency: %1$6d us  Ave %2$6.0f us  Std %3$6.1f us  Min %4$6d us  Max %5$6d" + outputCpu + "\n",
