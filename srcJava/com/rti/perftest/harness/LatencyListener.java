@@ -313,36 +313,32 @@ import java.io.*;
             
             StringBuilder sb = new StringBuilder();
 
-                sb.append('\n');
-                sb.append("Overall Results");
-                sb.append('\n');
-
-                sb.append("Length ,");
-                sb.append("Latency_Avg ,");
-                sb.append("Latency_Std,");
-                sb.append("Latency_Min,");
-                sb.append("Latency_Max,");
-                sb.append("Latency_50%,");
-                sb.append("Latency_90%,");
-                sb.append("Latency_99%,");
-                sb.append("Latency_99.99%,");
-                sb.append("Latency_99.9999%,");
-                sb.append('\n');
-
-                sb.append( _lastDataLength + PerfTest.OVERHEAD_BYTES + ",");
-                sb.append(latency_ave + ",");
-                sb.append(latency_std + ",");
-                sb.append(_latencyMin + ",");
-                sb.append(_latencyMax + ",");
-
-                sb.append( _latencyHistory[(int)(_count * 50 / (double)100)] + ",");
-                sb.append(_latencyHistory[(int)(_count * 90 / (double)100)] + ",");
-                sb.append(_latencyHistory[(int)(_count * 99 / (double)100)] + ",");
-                sb.append(_latencyHistory[(int)(_count * (9999.0 / (double)10000))] + ",");
-                sb.append( _latencyHistory[(int)(_count * (999999.0 / (double)1000000))] + ",");
-
-
-            
+            sb.append('\n');
+            sb.append("Overall Results");
+            sb.append('\n');
+            sb.append("Samples received ,");
+            sb.append("Length ,");
+            sb.append("Latency_Avg ,");
+            sb.append("Latency_Std,");
+            sb.append("Latency_Min,");
+            sb.append("Latency_Max,");
+            sb.append("Latency_50%,");
+            sb.append("Latency_90%,");
+            sb.append("Latency_99%,");
+            sb.append("Latency_99.99%,");
+            sb.append("Latency_99.9999%,");
+            sb.append('\n');
+            sb.append( _lastDataLength + PerfTest.OVERHEAD_BYTES + ",");
+            sb.append(latency_ave + ",");
+            sb.append(latency_std + ",");
+            sb.append(_latencyMin + ",");
+            sb.append(_latencyMax + ",");
+            sb.append( _latencyHistory[(int)(_count * 50 / (double)100)] + ",");
+            sb.append(_latencyHistory[(int)(_count * 90 / (double)100)] + ",");
+            sb.append(_latencyHistory[(int)(_count * 99 / (double)100)] + ",");
+            sb.append(_latencyHistory[(int)(_count * (9999.0 / (double)10000))] + ",");
+            sb.append( _latencyHistory[(int)(_count * (999999.0 / (double)1000000))] + ",");
+            sb.append(_count);
 
             pwriter.write(sb.toString());
             pwriter.flush();
