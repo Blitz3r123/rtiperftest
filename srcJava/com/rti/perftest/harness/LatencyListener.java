@@ -210,7 +210,7 @@ import java.io.*;
                 System.out.println(e.getMessage());
             }
 
-            System.out.printf("Samples received: %1$6d samples \n", _count);
+            // System.out.printf("Samples received: %1$6d samples \n", _count);
 
             System.out.printf(
                 "One-Way Latency: %1$6d us  Ave %2$6.0f us  Std %3$6.1f us  Min %4$6d us  Max %5$6d" + outputCpu + "\n",
@@ -254,7 +254,7 @@ import java.io.*;
                 System.out.println(e.getMessage());
             }
 
-            System.out.printf("Samples received: %1$6d samples \n", _count);
+            // System.out.printf("Samples received: %1$6d samples \n", _count);
 
             System.out.printf(
                 "One-Way Latency: %1$6d us  Ave %2$6.0f us  Std %3$6.1f us  Min %4$6d us  Max %5$6d" + outputCpu + "\n",
@@ -328,6 +328,7 @@ import java.io.*;
             sb.append("Latency_99.99%,");
             sb.append("Latency_99.9999%,");
             sb.append('\n');
+            sb.append(_count);
             sb.append( _lastDataLength + PerfTest.OVERHEAD_BYTES + ",");
             sb.append(latency_ave + ",");
             sb.append(latency_std + ",");
@@ -338,7 +339,6 @@ import java.io.*;
             sb.append(_latencyHistory[(int)(_count * 99 / (double)100)] + ",");
             sb.append(_latencyHistory[(int)(_count * (9999.0 / (double)10000))] + ",");
             sb.append( _latencyHistory[(int)(_count * (999999.0 / (double)1000000))] + ",");
-            sb.append(_count);
 
             pwriter.write(sb.toString());
             pwriter.flush();
