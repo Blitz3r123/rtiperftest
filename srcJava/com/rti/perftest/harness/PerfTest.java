@@ -153,7 +153,7 @@ public final class PerfTest {
 
     public void dispose() {
         _messagingImpl.shutdown();
-        System.err.print("Test ended.\n");
+        // System.err.print("Test ended.\n");
     }
 
     public void finishTest() {
@@ -917,7 +917,7 @@ public final class PerfTest {
         }
 
         sleep(1000);
-        System.err.print("Finishing test...\n");
+        // System.err.print("Finishing test...\n");
     }
 
     /**
@@ -1273,9 +1273,9 @@ public final class PerfTest {
         }
 
         if (testCompleted) {
-            System.err.println("Finishing test due to timer...");
+            // System.err.println("Finishing test due to timer...");
         } else {
-            System.err.println("Finishing test...");
+            // System.err.println("Finishing test...");
         }
         return;
     }
