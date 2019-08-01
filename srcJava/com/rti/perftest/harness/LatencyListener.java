@@ -352,6 +352,7 @@ import java.io.*;
                 sb.append('\n');
             }
 
+            sb.append('\n');
             sb.append("Sample Count: ");
             sb.append('\n');
             sb.append(_latencyHistory.length);
