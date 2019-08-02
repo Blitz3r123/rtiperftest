@@ -182,88 +182,88 @@ import java.io.*;
             double latency_std = sqrt(
                 (double)_latencySumSquare / (double)_count - (latency_ave * latency_ave));
 
-            try(
-                PrintWriter pwriter = new PrintWriter(new FileOutputStream(new File("pub.csv"), true));
-                ){
+            // try(
+            //     PrintWriter pwriter = new PrintWriter(new FileOutputStream(new File("pub.csv"), true));
+            //     ){
                 
-                StringBuilder sb = new StringBuilder();
-                if(pubCount == 0){
-                    sb.append("One-Way Latency(us): ,");
-                    sb.append("Ave(us): ,");
-                    sb.append("Std(us): ,");
-                    sb.append("Min(us): ,");
-                    sb.append("Max(us): ,");
-                    sb.append('\n');
-                    pubCount++;
-                }
+            //     StringBuilder sb = new StringBuilder();
+            //     if(pubCount == 0){
+            //         sb.append("One-Way Latency(us): ,");
+            //         sb.append("Ave(us): ,");
+            //         sb.append("Std(us): ,");
+            //         sb.append("Min(us): ,");
+            //         sb.append("Max(us): ,");
+            //         sb.append('\n');
+            //         pubCount++;
+            //     }
 
-                sb.append(latency + ",");
-                sb.append(latency_ave + ",");
-                sb.append(latency_std + ",");
-                sb.append(_latencyMin + ",");
-                sb.append(_latencyMax + ",");
-                sb.append('\n');
+            //     sb.append(latency + ",");
+            //     sb.append(latency_ave + ",");
+            //     sb.append(latency_std + ",");
+            //     sb.append(_latencyMin + ",");
+            //     sb.append(_latencyMax + ",");
+            //     sb.append('\n');
                 
-                pwriter.write(sb.toString());
-                pwriter.flush();
-            }catch(FileNotFoundException e){
-                System.out.println(e.getMessage());
-            }
+            //     pwriter.write(sb.toString());
+            //     pwriter.flush();
+            // }catch(FileNotFoundException e){
+            //     System.out.println(e.getMessage());
+            // }
 
             // System.out.printf("Samples received: %1$6d samples \n", _count);
 
-            System.out.printf(
-                "One-Way Latency: %1$6d us  Ave %2$6.0f us  Std %3$6.1f us  Min %4$6d us  Max %5$6d" + outputCpu + "\n",
-                latency,
-                latency_ave,
-                latency_std,
-                _latencyMin,
-                _latencyMax
-            );
+            // System.out.printf(
+            //     "One-Way Latency: %1$6d us  Ave %2$6.0f us  Std %3$6.1f us  Min %4$6d us  Max %5$6d" + outputCpu + "\n",
+            //     latency,
+            //     latency_ave,
+            //     latency_std,
+            //     _latencyMin,
+            //     _latencyMax
+            // );
         } else if (PerfTest.printIntervals) {
             double latency_ave = (double)_latencySum / (double)_count;
 
             double latency_std = sqrt(
                 (double)_latencySumSquare / (double)_count - (latency_ave * latency_ave));
 
-            try(
-                PrintWriter pwriter = new PrintWriter(new FileOutputStream(new File("pub.csv"), true));
-                ){
+            // try(
+            //     PrintWriter pwriter = new PrintWriter(new FileOutputStream(new File("pub.csv"), true));
+            //     ){
                 
-                StringBuilder sb = new StringBuilder();
-                if(pubCount == 0){
-                    sb.append("One-Way Latency(us): ,");
-                    sb.append("Ave(us): ,");
-                    sb.append("Std(us): ,");
-                    sb.append("Min(us): ,");
-                    sb.append("Max(us): ,");
-                    sb.append('\n');
-                    pubCount++;
-                }
+            //     StringBuilder sb = new StringBuilder();
+            //     if(pubCount == 0){
+            //         sb.append("One-Way Latency(us): ,");
+            //         sb.append("Ave(us): ,");
+            //         sb.append("Std(us): ,");
+            //         sb.append("Min(us): ,");
+            //         sb.append("Max(us): ,");
+            //         sb.append('\n');
+            //         pubCount++;
+            //     }
 
-                sb.append(latency + ",");
-                sb.append(latency_ave + ",");
-                sb.append(latency_std + ",");
-                sb.append(_latencyMin + ",");
-                sb.append(_latencyMax + ",");
-                sb.append('\n');
+            //     sb.append(latency + ",");
+            //     sb.append(latency_ave + ",");
+            //     sb.append(latency_std + ",");
+            //     sb.append(_latencyMin + ",");
+            //     sb.append(_latencyMax + ",");
+            //     sb.append('\n');
                 
-                pwriter.write(sb.toString());
-                pwriter.flush();
-            }catch(FileNotFoundException e){
-                System.out.println(e.getMessage());
-            }
+            //     pwriter.write(sb.toString());
+            //     pwriter.flush();
+            // }catch(FileNotFoundException e){
+            //     System.out.println(e.getMessage());
+            // }
 
             // System.out.printf("Samples received: %1$6d samples \n", _count);
 
-            System.out.printf(
-                "One-Way Latency: %1$6d us  Ave %2$6.0f us  Std %3$6.1f us  Min %4$6d us  Max %5$6d" + outputCpu + "\n",
-                latency,
-                latency_ave,
-                latency_std,
-                _latencyMin,
-                _latencyMax
-            );
+            // System.out.printf(
+            //     "One-Way Latency: %1$6d us  Ave %2$6.0f us  Std %3$6.1f us  Min %4$6d us  Max %5$6d" + outputCpu + "\n",
+            //     latency,
+            //     latency_ave,
+            //     latency_std,
+            //     _latencyMin,
+            //     _latencyMax
+            // );
         }
         if (_writer != null) {
             _writer.notifyPingResponse();
@@ -281,7 +281,7 @@ import java.io.*;
         }
 
         // sort the array (in ascending order)
-        Arrays.sort(_latencyHistory, 0, (int)_count);
+        // Arrays.sort(_latencyHistory, 0, (int)_count);
         double latency_ave = _latencySum / (double)_count;
         // TODO: This std dev calculation isn't correct!
         double latency_std = sqrt(
@@ -292,20 +292,20 @@ import java.io.*;
             outputCpu = CpuMonitor.get_cpu_average();
         }
 
-        System.out.printf(
-                "Length: %1$5d  Latency: Ave %2$6.0f us  Std %3$6.1f us  " +
-                "Min %4$6d us  Max %5$6d us  50%% %6$6d us  90%% %7$6d us  99%% %8$6d us  99.99%% %9$6d us  99.9999%% %10$6d us" + outputCpu + "\n",
-                _lastDataLength + PerfTest.OVERHEAD_BYTES,
-                latency_ave,
-                latency_std,
-                _latencyMin,
-                _latencyMax,
-                _latencyHistory[(int)(_count * 50 / (double)100)],
-                _latencyHistory[(int)(_count * 90 / (double)100)],
-                _latencyHistory[(int)(_count * 99 / (double)100)],
-                _latencyHistory[(int)(_count * (9999.0 / (double)10000))],
-                _latencyHistory[(int)(_count * (999999.0 / (double)1000000))]
-        );
+        // System.out.printf(
+        //         "Length: %1$5d  Latency: Ave %2$6.0f us  Std %3$6.1f us  " +
+        //         "Min %4$6d us  Max %5$6d us  50%% %6$6d us  90%% %7$6d us  99%% %8$6d us  99.99%% %9$6d us  99.9999%% %10$6d us" + outputCpu + "\n",
+        //         _lastDataLength + PerfTest.OVERHEAD_BYTES,
+        //         latency_ave,
+        //         latency_std,
+        //         _latencyMin,
+        //         _latencyMax,
+        //         _latencyHistory[(int)(_count * 50 / (double)100)],
+        //         _latencyHistory[(int)(_count * 90 / (double)100)],
+        //         _latencyHistory[(int)(_count * 99 / (double)100)],
+        //         _latencyHistory[(int)(_count * (9999.0 / (double)10000))],
+        //         _latencyHistory[(int)(_count * (999999.0 / (double)1000000))]
+        // );
 
         try(
             PrintWriter pwriter = new PrintWriter(new FileOutputStream(new File("pub.csv"), true));
@@ -313,21 +313,51 @@ import java.io.*;
             
             StringBuilder sb = new StringBuilder();
 
+            // sb.append('\n');
+            // sb.append("Overall Results");
+            // sb.append('\n');
+            // sb.append("Samples received ,");
+            // sb.append("Length ,");
+            // sb.append("Latency_Avg ,");
+            // sb.append("Latency_Std,");
+            // sb.append("Latency_Min,");
+            // sb.append("Latency_Max,");
+            // sb.append("Latency_50%,");
+            // sb.append("Latency_90%,");
+            // sb.append("Latency_99%,");
+            // sb.append("Latency_99.99%,");
+            // sb.append("Latency_99.9999%,");
+            // sb.append('\n');
+            // sb.append(_count);
+            // sb.append( _lastDataLength + PerfTest.OVERHEAD_BYTES + ",");
+            // sb.append(latency_ave + ",");
+            // sb.append(latency_std + ",");
+            // sb.append(_latencyMin + ",");
+            // sb.append(_latencyMax + ",");
+            // sb.append( _latencyHistory[(int)(_count * 50 / (double)100)] + ",");
+            // sb.append(_latencyHistory[(int)(_count * 90 / (double)100)] + ",");
+            // sb.append(_latencyHistory[(int)(_count * 99 / (double)100)] + ",");
+            // sb.append(_latencyHistory[(int)(_count * (9999.0 / (double)10000))] + ",");
+            // sb.append( _latencyHistory[(int)(_count * (999999.0 / (double)1000000))] + ",");
+
+            // sb.append('\n');
+            
+            System.out.println("Writing values to csv file.");
+
+            sb.append("One-Way Latency (us): ");
             sb.append('\n');
-            sb.append("Overall Results");
+            
+            for(int k = 0; k < _latencyHistory.length; k++){
+                sb.append(_latencyHistory[k]);
+                sb.append('\n');
+            }
+
             sb.append('\n');
-            sb.append("Samples received ,");
-            sb.append("Length ,");
-            sb.append("Latency_Avg ,");
-            sb.append("Latency_Std,");
-            sb.append("Latency_Min,");
-            sb.append("Latency_Max,");
-            sb.append("Latency_50%,");
-            sb.append("Latency_90%,");
-            sb.append("Latency_99%,");
-            sb.append("Latency_99.99%,");
-            sb.append("Latency_99.9999%,");
+            sb.append("Sample Count: ");
             sb.append('\n');
+            sb.append(_latencyHistory.length);
+            sb.append('\n');
+<<<<<<< HEAD
             sb.append(_count);
             sb.append( _lastDataLength + PerfTest.OVERHEAD_BYTES + ",");
             sb.append(latency_ave + ",");
@@ -339,9 +369,14 @@ import java.io.*;
             sb.append(_latencyHistory[(int)(_count * 99 / (double)100)] + ",");
             sb.append(_latencyHistory[(int)(_count * (9999.0 / (double)10000))] + ",");
             sb.append( _latencyHistory[(int)(_count * (999999.0 / (double)1000000))] + ",");
+=======
+>>>>>>> dced442cd96f6357e60da0644855c7b7adc2110a
 
             pwriter.write(sb.toString());
             pwriter.flush();
+
+            System.out.println("Writing complete.");
+
         }catch(FileNotFoundException e){
             System.out.println(e.getMessage());
         }
