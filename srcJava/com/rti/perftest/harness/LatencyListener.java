@@ -334,7 +334,7 @@ import java.io.*;
             sb.append(latency_std + ",");
             sb.append(_latencyMin + ",");
             sb.append(_latencyMax + ",");
-            sb.append( _latencyHistory[(int)(_count * 50 / (double)100)] + ",");
+            sb.append(_latencyHistory[(int)(_count * 50 / (double)100)] + ",");
             sb.append(_latencyHistory[(int)(_count * 90 / (double)100)] + ",");
             sb.append(_latencyHistory[(int)(_count * 99 / (double)100)] + ",");
             sb.append(_latencyHistory[(int)(_count * (9999.0 / (double)10000))] + ",");
