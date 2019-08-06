@@ -357,20 +357,18 @@ import java.io.*;
             sb.append('\n');
             sb.append(_latencyHistory.length);
             sb.append('\n');
-<<<<<<< HEAD
-            sb.append(_count);
-            sb.append( _lastDataLength + PerfTest.OVERHEAD_BYTES + ",");
-            sb.append(latency_ave + ",");
-            sb.append(latency_std + ",");
-            sb.append(_latencyMin + ",");
-            sb.append(_latencyMax + ",");
-            sb.append(_latencyHistory[(int)(_count * 50 / (double)100)] + ",");
-            sb.append(_latencyHistory[(int)(_count * 90 / (double)100)] + ",");
-            sb.append(_latencyHistory[(int)(_count * 99 / (double)100)] + ",");
-            sb.append(_latencyHistory[(int)(_count * (9999.0 / (double)10000))] + ",");
-            sb.append( _latencyHistory[(int)(_count * (999999.0 / (double)1000000))] + ",");
-=======
->>>>>>> dced442cd96f6357e60da0644855c7b7adc2110a
+
+            // sb.append(_count);
+            // sb.append( _lastDataLength + PerfTest.OVERHEAD_BYTES + ",");
+            // sb.append(latency_ave + ",");
+            // sb.append(latency_std + ",");
+            // sb.append(_latencyMin + ",");
+            // sb.append(_latencyMax + ",");
+            // sb.append(_latencyHistory[(int)(_count * 50 / (double)100)] + ",");
+            // sb.append(_latencyHistory[(int)(_count * 90 / (double)100)] + ",");
+            // sb.append(_latencyHistory[(int)(_count * 99 / (double)100)] + ",");
+            // sb.append(_latencyHistory[(int)(_count * (9999.0 / (double)10000))] + ",");
+            // sb.append( _latencyHistory[(int)(_count * (999999.0 / (double)1000000))] + ",");
 
             pwriter.write(sb.toString());
             pwriter.flush();
