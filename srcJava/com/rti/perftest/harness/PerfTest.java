@@ -120,7 +120,7 @@ public final class PerfTest {
     public static String fileName = "";
     public ArrayList<Long> _packetsHistory = new ArrayList<Long>();
     public ArrayList<Long> _packetsPerSecHistory = new ArrayList<Long>();
-    public ArrayList<Long> _throughputHistory = new ArrayList<Double>();
+    public ArrayList<Double> _throughputHistory = new ArrayList<Double>();
     public ArrayList<Long> _lostHistory = new ArrayList<Long>();
 
       // Getter
