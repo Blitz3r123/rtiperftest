@@ -230,6 +230,8 @@ public final class PerfTest {
                 StringBuilder sb = new StringBuilder();
                 
                 subscriber(sb);
+                
+                System.out.println("row_count: " + row_count);
 
                 System.out.println("Ending subscriber()");
 
@@ -905,8 +907,6 @@ public final class PerfTest {
                     sb.append(reader_listener.missingPackets + ", ");
                     sb.append('\n');
                     row_count++;
-                    System.out.println("row_count: " + row_count);
-                    System.out.println("HELLOOOOOO");
                     System.out.printf(
                             "Packets: %1$8d  Packets/s: %2$7d  Packets/s(ave): %3$7.0f  " +
                             "Mbps: %4$7.1f  Mbps(ave): %5$7.1f  Lost: %6$d " + outputCpu + "\n",
