@@ -118,7 +118,7 @@ public final class PerfTest {
     private boolean testCompletedScan = true;
 
     public static String fileName = "";
-    public ArrayList<int> _packetsHistory = new ArrayList<String>();
+    public ArrayList<Integer> _packetsHistory = new ArrayList<Integer>();
 
       // Getter
       public static String getFileName() {
