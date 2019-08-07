@@ -233,12 +233,9 @@ public final class PerfTest {
                 
                 subscriber(sb);
                 
-                System.out.println(_packetsHistory);
-
-                for(int i = 0; i < _packetsPerSecHistory.size(); i++){
-                    // sb.append(_packetsHistory.get(i) + " , ");
-                    sb.append(_packetsPerSecHistory.get(i) + " , ");
-                    // sb.append(_throughputHistory.get(i) + " , ");
+                for(int i = 0; i < _packetsHistory.size(); i++){
+                    sb.append(_packetsHistory.get(i) + " , ");
+                    sb.append(_throughputHistory.get(i) + " , ");
                     // sb.append(_lostHistory.get(i) + " , ");
                     sb.append('\n');
                 }
