@@ -118,8 +118,7 @@ public final class PerfTest {
     private boolean testCompletedScan = true;
 
     public static String fileName = "";
-    public int[] _packetsHistory = null;
-    public int row_count = 0;
+    public ArrayList<int> _packetsHistory = new ArrayList<String>();
 
       // Getter
       public static String getFileName() {
@@ -231,9 +230,8 @@ public final class PerfTest {
                 
                 subscriber(sb);
                 
-                System.out.println("row_count: " + row_count);
-
-                System.out.println("Ending subscriber()");
+                System.out.println("_packetsHistory:");
+                System.out.println(_packetsHistory);
 
                 pwriter.write(sb.toString());
                 pwriter.close();
@@ -906,7 +904,6 @@ public final class PerfTest {
                     sb.append(bps_ave * 8.0 / 1000.0 / 1000.0 + ", ");
                     sb.append(reader_listener.missingPackets + ", ");
                     sb.append('\n');
-                    row_count++;
                     System.out.printf(
                             "Packets: %1$8d  Packets/s: %2$7d  Packets/s(ave): %3$7.0f  " +
                             "Mbps: %4$7.1f  Mbps(ave): %5$7.1f  Lost: %6$d " + outputCpu + "\n",
@@ -914,6 +911,7 @@ public final class PerfTest {
                             bps * 8.0 / 1000.0 / 1000.0, bps_ave * 8.0 / 1000.0 / 1000.0,
                             reader_listener.missingPackets
                     );
+                    _packetsHistory.add(last_msgs);
                 }
             }
         }
