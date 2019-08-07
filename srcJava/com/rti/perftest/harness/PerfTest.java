@@ -904,7 +904,8 @@ public final class PerfTest {
                     sb.append(bps_ave * 8.0 / 1000.0 / 1000.0 + ", ");
                     sb.append(reader_listener.missingPackets + ", ");
                     sb.append('\n');
-                    row_count ++;
+                    row_count++;
+                    System.out.println("row_count: " + row_count);
                     System.out.printf(
                             "Packets: %1$8d  Packets/s: %2$7d  Packets/s(ave): %3$7.0f  " +
                             "Mbps: %4$7.1f  Mbps(ave): %5$7.1f  Lost: %6$d " + outputCpu + "\n",
@@ -912,7 +913,6 @@ public final class PerfTest {
                             bps * 8.0 / 1000.0 / 1000.0, bps_ave * 8.0 / 1000.0 / 1000.0,
                             reader_listener.missingPackets
                     );
-                    System.out.println("row_count: " + row_count);
                 }
             }
         }
