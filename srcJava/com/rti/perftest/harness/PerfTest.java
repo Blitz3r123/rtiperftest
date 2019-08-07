@@ -235,8 +235,9 @@ public final class PerfTest {
                 
                 for(int i = 0; i < _packetsHistory.size(); i++){
                     sb.append(_packetsHistory.get(i) + " , ");
+                    sb.append(_packetsPerSecHistory.get(i) + " , ");
                     sb.append(_throughputHistory.get(i) + " , ");
-                    // sb.append(_lostHistory.get(i) + " , ");
+                    sb.append(_lostHistory.get(i) + " , ");
                     sb.append('\n');
                 }
 
@@ -919,6 +920,9 @@ public final class PerfTest {
                             reader_listener.missingPackets
                     );
                     _packetsHistory.add(last_msgs);
+                    _packetsPerSecHistory.add(mps);
+                    _throughputHistory.add(bps * 8.0 / 1000.0 / 1000.0);
+                    _lostHistory.add(reader_listener.missingPackets);
                 }
             }
         }
