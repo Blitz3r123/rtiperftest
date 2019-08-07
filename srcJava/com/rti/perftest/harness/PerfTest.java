@@ -118,8 +118,8 @@ public final class PerfTest {
     private boolean testCompletedScan = true;
 
     public static String fileName = "";
-    private int[] _packetsHistory = null;
-    private int row_count = 0;
+    public int[] _packetsHistory = null;
+    public int row_count = 0;
 
       // Getter
       public static String getFileName() {
