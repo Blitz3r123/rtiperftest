@@ -168,9 +168,9 @@ import java.io.*;
             _lastDataLength = message.size;
 
             if (_lastDataLength != 0 && PerfTest.printIntervals) {
-                System.out.printf(
-                        "\n\n********** New data length is %1$d\n",
-                        _lastDataLength + PerfTest.OVERHEAD_BYTES);
+                // System.out.printf(
+                //         "\n\n********** New data length is %1$d\n",
+                //         _lastDataLength + PerfTest.OVERHEAD_BYTES);
             }
 
             double latency_ave = 0;
@@ -342,7 +342,7 @@ import java.io.*;
 
             // sb.append('\n');
             
-            System.out.println("Writing values to csv file.");
+            // System.out.println("Writing values to csv file.");
 
             sb.append("One-Way Latency (us): ");
             sb.append('\n');
@@ -370,7 +370,7 @@ import java.io.*;
             pwriter.write(sb.toString());
             pwriter.flush();
 
-            System.out.println("Writing complete.");
+            // System.out.println("Writing complete.");
 
         }catch(FileNotFoundException e){
             System.out.println(e.getMessage());
