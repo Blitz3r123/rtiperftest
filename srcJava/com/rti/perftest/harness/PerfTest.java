@@ -230,8 +230,12 @@ public final class PerfTest {
                 
                 subscriber(sb);
                 
-                System.out.println("_packetsHistory:");
                 System.out.println(_packetsHistory);
+
+                for(int i = 0; i < _packetsHistory.size(); i++){
+                    sb.append(_packetsHistory.get(i));
+                    sb.append('\n');
+                }
 
                 pwriter.write(sb.toString());
                 pwriter.close();
@@ -897,13 +901,13 @@ public final class PerfTest {
                         sb.append('\n');
                         titleCount++;
                     }
-                    sb.append(last_msgs + ",");
-                    sb.append(mps + ", ");
-                    sb.append(mps_ave + ", ");
-                    sb.append(bps * 8.0 / 1000.0 / 1000.0 + ", ");
-                    sb.append(bps_ave * 8.0 / 1000.0 / 1000.0 + ", ");
-                    sb.append(reader_listener.missingPackets + ", ");
-                    sb.append('\n');
+                    // sb.append(last_msgs + ",");
+                    // sb.append(mps + ", ");
+                    // sb.append(mps_ave + ", ");
+                    // sb.append(bps * 8.0 / 1000.0 / 1000.0 + ", ");
+                    // sb.append(bps_ave * 8.0 / 1000.0 / 1000.0 + ", ");
+                    // sb.append(reader_listener.missingPackets + ", ");
+                    // sb.append('\n');
                     System.out.printf(
                             "Packets: %1$8d  Packets/s: %2$7d  Packets/s(ave): %3$7.0f  " +
                             "Mbps: %4$7.1f  Mbps(ave): %5$7.1f  Lost: %6$d " + outputCpu + "\n",
