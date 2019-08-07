@@ -119,6 +119,9 @@ public final class PerfTest {
 
     public static String fileName = "";
     public ArrayList<Long> _packetsHistory = new ArrayList<Long>();
+    public ArrayList<Long> _packetsPerSecHistory = new ArrayList<Long>();
+    public ArrayList<Long> _throughputHistory = new ArrayList<Long>();
+    public ArrayList<Long> _lostHistory = new ArrayList<Long>();
 
       // Getter
       public static String getFileName() {
@@ -233,7 +236,10 @@ public final class PerfTest {
                 System.out.println(_packetsHistory);
 
                 for(int i = 0; i < _packetsHistory.size(); i++){
-                    sb.append(_packetsHistory.get(i));
+                    sb.append(_packetsHistory.get(i) + " , ");
+                    sb.append(_packetsPerSecHistory.get(i) + " , ");
+                    sb.append(_throughputHistory.get(i) + " , ");
+                    sb.append(_lostHistory.get(i) + " , ");
                     sb.append('\n');
                 }
 
