@@ -229,14 +229,36 @@ public final class PerfTest {
                 StringBuilder sb = new StringBuilder();
                 
                 subscriber(sb);
-                
+
+                int throughputCount = 0;
+                int throughputTotal = 0;
+                int packetsReceivedTotal = 0;
+                int packetsPerSecTotal = 0;
+                int lostPercentTotal = 0;
+
                 for(int i = 0; i < _packetsHistory.size(); i++){
+                    sb.append(" , ");
                     sb.append(_packetsHistory.get(i) + " , ");
                     sb.append(_packetsPerSecHistory.get(i) + " , ");
                     sb.append(_throughputHistory.get(i) + " , ");
                     sb.append(_lostHistory.get(i) + " , ");
+                    sb.append(((_lostHistory.get(i) / _packetsHistory.get(i)) * 100) + " , ");
                     sb.append('\n');
+
+                    throughputTotal += _throughputHistory.get(i);
+                    packetsReceivedTotal += _packetsHistory.get(i);
+                    packetsPerSecTotal += _packetsPerSecHistory.get(i);
+                    lostPercentTotal += ((_lostHistory.get(i) / _packetsHistory.get(i)) * 100);
+                    throughputCount++;
                 }
+
+                sb.append("Averages: ,");
+                sb.append(packetsReceivedTotal / throughputCount + " ,");
+                sb.append(packetsPerSecTotal / throughputCount + " ,");
+                sb.append(throughputTotal / throughputCount + " ,");
+                sb.append(" ,");
+                sb.append(lostPercentTotal / throughputCount + " ,");
+                sb.append('\n');
 
                 pwriter.write(sb.toString());
                 pwriter.close();
@@ -891,12 +913,12 @@ public final class PerfTest {
 
                 if (last_msgs > 0) {
                     if(titleCount == 0){
+                        sb.append(",");
                         sb.append("Packets:,");
                         sb.append("Packets/s:,");
-                        // sb.append("Packets/s (ave):,");
                         sb.append("Mbps:,");
-                        // sb.append("Mbps (ave):,");
                         sb.append("Lost,");
+                        sb.append("% Loss,");
                         sb.append('\n');
                         titleCount++;
                     }

@@ -347,16 +347,30 @@ import java.io.*;
             sb.append("One-Way Latency (us): ");
             sb.append('\n');
             
+            int latencyTotal = 0;
+            int latencyCount = 0;
+            int nonZeroCount = 0;
+            
             for(int k = 0; k < _latencyHistory.length; k++){
                 sb.append(_latencyHistory[k]);
                 sb.append('\n');
+
+                latencyTotal += _latencyHistory[k];
+                latencyCount++;
+                if(_latencyHistory[k] > 0){
+                    nonZeroCount++;
+                }
             }
 
             sb.append('\n');
-            sb.append("Sample Count: ");
+            sb.append("Average: ,");
+            sb.append(latencyTotal / latencyCount);
             sb.append('\n');
+            sb.append("Non Zero Average: ,");
+            sb.append(latencyTotal / nonZeroCount);
+            sb.append('\n');
+            sb.append("Sample Count: ,");
             sb.append(_latencyHistory.length);
-            sb.append('\n');
 
             // sb.append(_count);
             // sb.append( _lastDataLength + PerfTest.OVERHEAD_BYTES + ",");
