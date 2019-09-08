@@ -231,9 +231,9 @@ public final class PerfTest {
                 subscriber(sb);
 
                 int throughputCount = 0;
-                int throughputTotal = 0;
-                int packetsReceivedTotal = 0;
-                int packetsPerSecTotal = 0;
+                double throughputTotal = 0;
+                double packetsReceivedTotal = 0;
+                double packetsPerSecTotal = 0;
                 double lostPercentTotal = 0;
 
                 for(int i = 0; i < _packetsHistory.size(); i++){

@@ -347,7 +347,7 @@ import java.io.*;
             sb.append("One-Way Latency (us): ");
             sb.append('\n');
             
-            int latencyTotal = 0;
+            double latencyTotal = 0;
             int latencyCount = 0;
             int nonZeroCount = 0;
             
