@@ -242,14 +242,18 @@ public final class PerfTest {
                     sb.append(_packetsPerSecHistory.get(i) + " , ");
                     sb.append(_throughputHistory.get(i) + " , ");
                     sb.append(_lostHistory.get(i) + " , ");
-                    sb.append(((_lostHistory.get(i) / _packetsHistory.get(i)) * 100) + " , ");
+                    sb.append(((_lostHistory.get(i) / _packetsHistory.get(i))) + " , ");
                     sb.append('\n');
+
+                    System.out.println(_lostHistory.get(i) + "/" + _packetsHistory.get(i) + "=" + (_lostHistory.get(i) / _packetsHistory.get(i)));
 
                     throughputTotal += _throughputHistory.get(i);
                     packetsReceivedTotal += _packetsHistory.get(i);
                     packetsPerSecTotal += _packetsPerSecHistory.get(i);
-                    lostPercentTotal += ((_lostHistory.get(i) / _packetsHistory.get(i)) * 100);
+                    lostPercentTotal += (_lostHistory.get(i) / _packetsHistory.get(i));
                     throughputCount++;
+
+                    System.out.println("lostPercentTotal: " + lostPercentTotal);
                 }
 
                 sb.append("Averages: ,");
