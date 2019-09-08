@@ -234,7 +234,7 @@ public final class PerfTest {
                 int throughputTotal = 0;
                 int packetsReceivedTotal = 0;
                 int packetsPerSecTotal = 0;
-                int lostPercentTotal = 0;
+                double lostPercentTotal = 0;
 
                 for(int i = 0; i < _packetsHistory.size(); i++){
                     sb.append(" , ");
