@@ -236,6 +236,8 @@ public final class PerfTest {
                 double packetsPerSecTotal = 0;
                 double lostPercentTotal = 0;
 
+                double testVariable;
+
                 for(int i = 0; i < _packetsHistory.size(); i++){
                     sb.append(" , ");
                     sb.append(_packetsHistory.get(i) + " , ");
@@ -245,7 +247,9 @@ public final class PerfTest {
                     sb.append(((_lostHistory.get(i) / _packetsHistory.get(i))) + " , ");
                     sb.append('\n');
 
-                    System.out.println(_lostHistory.get(i) + "/" + _packetsHistory.get(i) + "=" + (_lostHistory.get(i) / _packetsHistory.get(i)));
+                    testVariable = (double)(_lostHistory.get(i) / _packetsHistory.get(i));
+
+                    System.out.println(_lostHistory.get(i) + "/" + _packetsHistory.get(i) + "=" + testVariable);
 
                     throughputTotal += _throughputHistory.get(i);
                     packetsReceivedTotal += _packetsHistory.get(i);
