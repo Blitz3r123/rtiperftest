@@ -234,7 +234,9 @@ public final class PerfTest {
                 double throughputTotal = 0;
                 double packetsReceivedTotal = 0;
                 double packetsPerSecTotal = 0;
-                double lostPercentTotal = 0;
+                // double lostPercentTotal = 0;
+
+                // double testVariable;
 
                 for(int i = 0; i < _packetsHistory.size(); i++){
                     sb.append(" , ");
@@ -242,22 +244,24 @@ public final class PerfTest {
                     sb.append(_packetsPerSecHistory.get(i) + " , ");
                     sb.append(_throughputHistory.get(i) + " , ");
                     sb.append(_lostHistory.get(i) + " , ");
-                    sb.append(((_lostHistory.get(i) / _packetsHistory.get(i)) * 100) + " , ");
+                    // sb.append((double)(_lostHistory.get(i) / _packetsHistory.get(i)) + " , ");
                     sb.append('\n');
 
                     throughputTotal += _throughputHistory.get(i);
                     packetsReceivedTotal += _packetsHistory.get(i);
                     packetsPerSecTotal += _packetsPerSecHistory.get(i);
-                    lostPercentTotal += ((_lostHistory.get(i) / _packetsHistory.get(i)) * 100);
+                    // lostPercentTotal += (double)(_lostHistory.get(i) / _packetsHistory.get(i));
                     throughputCount++;
+
+                    // System.out.println("lostPercentTotal: " + lostPercentTotal);
                 }
 
                 sb.append("Averages: ,");
                 sb.append(packetsReceivedTotal / throughputCount + " ,");
                 sb.append(packetsPerSecTotal / throughputCount + " ,");
                 sb.append(throughputTotal / throughputCount + " ,");
-                sb.append(" ,");
-                sb.append(lostPercentTotal / throughputCount + " ,");
+                // sb.append(" ,");
+                // sb.append(lostPercentTotal / throughputCount + " ,");
                 sb.append('\n');
 
                 pwriter.write(sb.toString());
