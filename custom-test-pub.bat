@@ -1,1 +1,1 @@
-start cmd /k perftest_java.bat -pub -dataLen 4096 -domain 2 -latencyCount 10 -numIter 10000000 -bestEffort -multicast  
+start cmd /k perftest_java.bat -pub -dataLen 4096 -domain 2 -latencyCount 10 -numIter 100000000 -bestEffort -multicast  
