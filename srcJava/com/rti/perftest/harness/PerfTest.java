@@ -157,7 +157,7 @@ public final class PerfTest {
 
     public void dispose() {
         _messagingImpl.shutdown();
-        // System.err.print("Test ended.\n");
+        System.err.print("Test ended.\n");
     }
 
     public void finishTest() {
@@ -933,13 +933,13 @@ public final class PerfTest {
                     // sb.append(bps_ave * 8.0 / 1000.0 / 1000.0 + ", ");
                     // sb.append(reader_listener.missingPackets + ", ");
                     // sb.append('\n');
-                    // System.out.printf(
-                    //         "Packets: %1$8d  Packets/s: %2$7d  Packets/s(ave): %3$7.0f  " +
-                    //         "Mbps: %4$7.1f  Mbps(ave): %5$7.1f  Lost: %6$d " + outputCpu + "\n",
-                    //         last_msgs, mps, mps_ave,
-                    //         bps * 8.0 / 1000.0 / 1000.0, bps_ave * 8.0 / 1000.0 / 1000.0,
-                    //         reader_listener.missingPackets
-                    // );
+                    System.out.printf(
+                            "Packets: %1$8d  Packets/s: %2$7d  Packets/s(ave): %3$7.0f  " +
+                            "Mbps: %4$7.1f  Mbps(ave): %5$7.1f  Lost: %6$d " + outputCpu + "\n",
+                            last_msgs, mps, mps_ave,
+                            bps * 8.0 / 1000.0 / 1000.0, bps_ave * 8.0 / 1000.0 / 1000.0,
+                            reader_listener.missingPackets
+                    );
                     _packetsHistory.add(last_msgs);
                     _packetsPerSecHistory.add(mps);
                     _throughputHistory.add(bps * 8.0 / 1000.0 / 1000.0);
@@ -953,7 +953,7 @@ public final class PerfTest {
         }
 
         sleep(1000);
-        // System.err.print("Finishing test...\n");
+        System.err.print("Finishing test...\n");
     }
 
     /**
@@ -1309,9 +1309,9 @@ public final class PerfTest {
         }
 
         if (testCompleted) {
-            // System.err.println("Finishing test due to timer...");
+            System.err.println("Finishing test due to timer...");
         } else {
-            // System.err.println("Finishing test...");
+            System.err.println("Finishing test...");
         }
         return;
     }
