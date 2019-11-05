@@ -105,6 +105,8 @@ import com.rti.perftest.TestMessage;
 
     public void processMessage(TestMessage message) {
 
+        // _numPublishers is taken from input parameter in subscriber script file
+        // message.entity_id is id of each publisher
         if (message.entity_id >= _numPublishers ||
             message.entity_id < 0) {
             System.out.println("ProcessMessage: message content no valid. message.entity_id out of bounds");
