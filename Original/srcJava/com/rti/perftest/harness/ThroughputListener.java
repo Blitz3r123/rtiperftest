@@ -110,6 +110,8 @@ import com.rti.perftest.TestMessage;
         if (message.entity_id >= _numPublishers ||
             message.entity_id < 0) {
             System.out.println("ProcessMessage: message content no valid. message.entity_id out of bounds");
+            System.out.println("message.entity_id: [" +message.entity_id+ "]");
+            System.out.println("_numPublishers: [" +_numPublishers+ "]");
             return;
         }
         // Check for test initialization messages
