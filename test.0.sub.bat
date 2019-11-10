@@ -1,1 +1,1 @@
-start cmd /k perftest_java.bat -sub -instances 1 -keyed -dataLen 40980 -domain 2 -fileName subscriber
+start cmd /k perftest_java.bat -sub -instances 1 -keyed -dataLen 100 -domain 2 -fileName subscriber
