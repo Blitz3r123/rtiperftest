@@ -7,6 +7,8 @@
  */
 
 #include <string>
+#include "ParameterManager.h"
+#include "Infrastructure_common.h"
 
 /* Forward declaration of perftest_cpp to avoid circular dependencies */
 class perftest_cpp;
@@ -23,14 +25,14 @@ class TestMessage
     unsigned int timestamp_usec;
     int          latency_ping;
 
-    TestMessage():
-        data(NULL),
-        size(0),
-        entity_id(0),
-        seq_num(0),
-        timestamp_sec(0),
-        timestamp_usec(0),
-        latency_ping(0)
+    TestMessage() :
+            data(NULL),
+            size(0),
+            entity_id(0),
+            seq_num(0),
+            timestamp_sec(0),
+            timestamp_usec(0),
+            latency_ping(0)
     {
         key[0]=0;
         key[1]=0;
@@ -44,10 +46,35 @@ class IMessagingCB
 {
   public:
     bool  end_test;
+    PerftestSemaphore *syncSemaphore;
 
   public:
-    virtual ~IMessagingCB() {}
+    IMessagingCB() : end_test(false), syncSemaphore(NULL){}
+
+    virtual ~IMessagingCB() {
+        if (syncSemaphore != NULL) {
+            PerftestSemaphore_delete(syncSemaphore);
+            syncSemaphore = NULL;
+        }
+    }
+
+    /* Create a semaphore if is not been created yet, and then return it */
+    PerftestSemaphore *get_synchronization_semaphore()
+    {
+        if (syncSemaphore == NULL) {
+            syncSemaphore = PerftestSemaphore_new();
+
+            if (syncSemaphore == NULL) {
+                fprintf(stderr,
+                        "Fail to create a Semaphore for IMessagingCB\n");
+                return NULL;
+            }
+        }
+        return syncSemaphore;
+    }
+
     virtual void ProcessMessage(TestMessage &message) = 0;
+
 };
 
 class IMessagingReader
@@ -59,6 +86,9 @@ class IMessagingReader
 
     // only used for non-callback test
     virtual TestMessage *ReceiveMessage() = 0;
+
+    // Unblock a receive function. Needed whe a thread is blocked receiving data
+    virtual bool unblock() {return true;}
 
     // only used for non-callback test to cleanup
     // the thread
@@ -113,20 +143,12 @@ class IMessaging
 {
   public:
     virtual ~IMessaging() {}
-    virtual bool Initialize(int argc, char *argv[], perftest_cpp *parent) = 0;
 
-    virtual void PrintCmdLineHelp() = 0;
+    virtual bool Initialize(ParameterManager &PM, perftest_cpp *parent) = 0;
 
     virtual std::string PrintConfiguration() = 0;
 
     virtual void Shutdown() = 0;
-
-    /*
-     * If the implementation supports batching and the test scenario is
-     * using batching, this function should return the size of the batch
-     * in bytes.
-     */
-    virtual int GetBatchSize() = 0;
 
     /*
      * Get an estimation of the minimum number of samples that need to be send
@@ -142,6 +164,11 @@ class IMessaging
      * to get data
      */
     virtual IMessagingReader *CreateReader(const char *topic_name, IMessagingCB *callback) = 0;
+
+    /* Get information about witch features are supported by the medleware */
+    virtual bool supports_listener() = 0;
+    virtual bool supports_discovery() = 0;
+
 };
 
 

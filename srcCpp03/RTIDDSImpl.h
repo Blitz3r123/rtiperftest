@@ -16,6 +16,16 @@
 #endif
 #include "rti/config/Logger.hpp"
 #include "PerftestTransport.h"
+#include <rti/domain/find.hpp>
+
+#ifdef RTI_ZEROCOPY_AVAILABLE
+#include "perftest_ZeroCopy.hpp"
+#endif
+
+#ifdef RTI_DARWIN
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#endif
 
 #define RTIPERFTEST_MAX_PEERS 1024
 
@@ -44,20 +54,13 @@ class RTIDDSImpl : public IMessaging
         Shutdown();
     }
 
-    void PrintCmdLineHelp();
-
-    bool ParseConfig(int argc, char *argv[]);
+    bool validate_input();
 
     std::string PrintConfiguration();
 
-    bool Initialize(int argc, char *argv[], perftest_cpp *parent);
+    bool Initialize(ParameterManager &PM, perftest_cpp *parent);
 
     void Shutdown();
-
-    int GetBatchSize()
-    {
-        return _BatchSize;
-    }
 
     unsigned long GetInitializationSampleCount();
 
@@ -78,57 +81,36 @@ class RTIDDSImpl : public IMessaging
     const std::string get_qos_profile_name(std::string topicName);
 
 
-  private:
+  protected:
+    // This semaphore is used in VxWorks to synchronize finalizing a factory
+    static rti::core::Semaphore _finalizeFactorySemaphore;
 
-    int          _SendQueueSize;
-    unsigned long _DataLen;
-    int          _DomainID;
-    const char  *_ProfileFile;
-    bool         _TurboMode;
-    bool         _UseXmlQos;
-    bool         _AutoThrottle;
-    bool         _IsReliable;
-    bool         _IsMulticast;
-    int _BatchSize;
-    unsigned long _InstanceCount;
+
+    // Specific functions to configure the Security plugin
+  #ifdef RTI_SECURE_PERFTEST
+    void configureSecurePlugin(std::map<std::string, std::string> &dpQosProperties);
+    std::string printSecureArgs();
+    void validateSecureArgs();
+  #endif
+
+
     long _InstanceMaxCountReader;
-    int          _InstanceHashBuckets;
-    int          _Durability;
-    bool         _DirectCommunication;
-    int          _KeepDurationUsec;
-    bool         _UsePositiveAcks;
-    bool         _LatencyTest;
-    bool         _IsDebug;
-    bool         _isLargeData;
-    bool         _isScan;
-    bool         _isPublisher;
-    bool         _isDynamicData;
-    bool         _IsAsynchronous;
-    std::string  _FlowControllerCustom;
-    unsigned long _useUnbounded;
-    int          _peer_host_count;
-    dds::core::StringSeq  _peer_host;
-    bool         _useCft;
-    long         _instancesToBeWritten;
-    std::vector<unsigned int> _CFTRange;
-
+    unsigned long _sendQueueSize;
+    int _InstanceHashBuckets;
+    bool _isLargeData;
+    bool _isFlatData;
+    bool _isZeroCopy;
     PerftestTransport _transport;
+    dds::domain::DomainParticipant _participant;
+    dds::sub::Subscriber _subscriber;
+    dds::pub::Publisher _publisher;
+
+    rti::core::Semaphore _pongSemaphore;
+    ParameterManager *_PM;
     perftest_cpp *_parent;
+    std::map<std::string, std::string> _qoSProfileNameMap;
 
   #ifdef RTI_SECURE_PERFTEST
-    bool _secureUseSecure;
-    bool _secureIsSigned;
-    bool _secureIsDataEncrypted; // user data
-    bool _secureIsSMEncrypted;   // submessage
-    bool _secureIsDiscoveryEncrypted;
-    std::string _secureCertAuthorityFile;
-    std::string _secureCertificateFile;
-    std::string _securePrivateKeyFile;
-    std::string _secureGovernanceFile;
-    std::string _securePermissionsFile;
-    std::string _secureLibrary;
-    int  _secureDebugLevel;
-
     static const std::string SECURE_PRIVATEKEY_FILE_PUB;
     static const std::string SECURE_PRIVATEKEY_FILE_SUB;
     static const std::string SECURE_CERTIFICATE_FILE_PUB;
@@ -139,29 +121,55 @@ class RTIDDSImpl : public IMessaging
     static const std::string SECURE_LIBRARY_NAME;
   #endif
 
-    int          _WaitsetEventCount;
-    unsigned int _WaitsetDelayUsec;
-
-    dds::core::Duration   _HeartbeatPeriod;
-    dds::core::Duration   _FastHeartbeatPeriod;
-
-    const char          *_ProfileLibraryName;
-
-    dds::domain::DomainParticipant _participant;
-    dds::sub::Subscriber _subscriber;
-    dds::pub::Publisher _publisher;
-
-    rti::core::Semaphore _pongSemaphore;
-
-    std::map<std::string, std::string> _qoSProfileNameMap;
-
-  #ifdef RTI_SECURE_PERFTEST
-    void configureSecurePlugin(std::map<std::string, std::string> &dpQosProperties);
-    std::string printSecureArgs();
-    void validateSecureArgs();
-  #endif
-
+    unsigned long int getShmemSHMMAX();
+    dds::sub::qos::DataReaderQos setup_DR_QoS(
+            std::string qos_profile,
+            std::string topic_name);
+    dds::pub::qos::DataWriterQos setup_DW_QoS(
+            std::string qos_profile,
+            std::string topic_name);
 };
 
+#ifdef RTI_FLATDATA_AVAILABLE
+  /**
+   * Overwrites CreateWriter and CreateReader from RTIDDSImpl
+   * to return Writers and Readers that make use of FlatData API
+   */
+  template <typename T>
+  class RTIDDSImpl_FlatData: public RTIDDSImpl<TestData_t> {
+  public:
+      /**
+       * Constructor for RTIDDSImpl_FlatData
+       *
+       * @param isZeroCopy states if the type is also ZeroCopy
+       */
+      RTIDDSImpl_FlatData(bool isZeroCopy=false);
+
+      /**
+       * Creates a Publisher that uses the FlatData API
+       *
+       * @param topic_name is the name of the topic where
+       *      the created writer will write new samples to
+       *
+       * @return a RTIFlatDataPublisher
+       */
+      IMessagingWriter *CreateWriter(const std::string &topic_name);
+
+      /**
+       * Creates a Subscriber that uses the FlatData API
+       *
+       * @param topic_name is the name of the topic where the created reader
+       *      will read new samples from
+       *
+       * @param callback is the callback that will process the receibed message
+       *      once it has been taken by the reader. Pass null for callback if
+       *      using IMessagingSubscriber.ReceiveMessage() to get data
+       *
+       * @return a RTIFlatDataSubscriber
+       */
+      IMessagingReader *CreateReader(
+              const std::string &topic_name, IMessagingCB *callback);
+  };
+#endif // RTI_FLATDATA_AVAILABLE
 
 #endif // __RTIDDSIMPL_H__

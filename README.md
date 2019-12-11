@@ -1,4 +1,4 @@
-# RTI Perftest (master) [<img alt="License" src="https://img.shields.io/badge/License-EPL%201.0-red.svg" align="right" />](https://opensource.org/licenses/EPL-1.0)
+# RTI Perftest 3.0.1 [<img alt="License" src="https://img.shields.io/badge/License-EPL%201.0-red.svg" align="right" />](https://opensource.org/licenses/EPL-1.0)
 
 RTI Perftest is a command-line application that measures the Latency and Throughput of very configurable scenarios that use RTI Connext DDS middleware to send messages.
 
@@ -18,4 +18,5 @@ Find all the information about RTI Perftest in the following documents:
         6.2.2 [Content-Filtered Topics](srcDoc/examples.rst#content-filtered-topics)  
         6.2.3 [RTI Routing-Service](srcDoc/examples.rst#rti-routing-service)  
         6.2.4 [Custom Types](srcDoc/examples.rst#using-custom-types)  
-7.  [Release Notes](srcDoc/release_notes.rst)
+7.  [Optimizing Your OS For Network Performance](srcDoc/tuning_os.rst)
+8.  [Release Notes](srcDoc/release_notes.rst)

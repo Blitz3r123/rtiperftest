@@ -1,1 +1,0 @@
-start cmd /k perftest_java.bat -sub -dataLen 40960 -domain 2 -bestEffort -fileName subscriber -numPublishers 5

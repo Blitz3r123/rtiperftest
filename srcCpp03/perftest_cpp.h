@@ -22,9 +22,11 @@
 #include "RTIDDSImpl.h"
 #include "MessagingIF.h"
 #include "perftest.hpp"
+#include "ParameterManager.h"
 
 #ifdef RTI_WIN32
   #include <windows.h>
+#elif defined RTI_INTIME
 #else
   #ifndef RTI_VXWORKS
     #include <sys/time.h>
@@ -35,23 +37,18 @@
   #include <signal.h>
 #endif
 
-/*
- * This is needed by MilliSleep in VxWorks, since in some versions the usleep
- * function does not exist. In the rest of OS we won't make use of it.
- */
-#if defined(RTI_VXWORKS)
-  #include <rti/util/util.hpp>
-#endif
-
+#include <rti/util/util.hpp>
 #include "MessagingIF.h"
-#include "perftestThreadPriorities.h"
+#include "ThreadPriorities.h"
+
+#define PERFTEST_DISCOVERY_TIME_MSEC 1000   // 1 second
 
 struct Perftest_ProductVersion_t
 {
-  char major;
-  char minor;
-  char release;
-  char revision;
+    char major;
+    char minor;
+    char release;
+    char revision;
 };
 
 class perftest_cpp
@@ -59,97 +56,52 @@ class perftest_cpp
   public:
     perftest_cpp();
     ~perftest_cpp();
-
     int Run(int argc, char *argv[]);
-    bool ParseConfig(int argc, char *argv[]);
+    bool validate_input();
     void PrintConfiguration();
     unsigned int GetSamplesPerBatch();
-    const PerftestThreadPriorities get_thread_priorities();
-
-private:
-    int RunPublisher();
-    int RunSubscriber();
-    bool set_main_thread_priority();
-    bool check_priority_range(int value);
-    bool parse_priority(std::string arg);
-
-  public:
-    static void MilliSleep(unsigned int millisec) {
-      #if defined(RTI_WIN32)
-        Sleep(millisec);
-      #elif defined(RTI_VXWORKS)
-        rti::util::sleep(dds::core::Duration(0,millisec*1000000));
-      #else
-        usleep(millisec * 1000);
-      #endif
-    }
-
+    const ThreadPriorities get_thread_priorities();
+    static void MilliSleep(unsigned int millisec);
     static const rti::core::ProductVersion GetDDSVersion();
     static const Perftest_ProductVersion_t GetPerftestVersion();
     static void PrintVersion();
-
-    static void ThreadYield() {
-  #ifdef RTI_WIN32
-        Sleep(0);
-  #else
-        sched_yield();
-  #endif
-    }
+    static void ThreadYield();
+    static unsigned long long GetTimeUsec();
+    static void Timeout();
+    static void Timeout_scan();
 
   private:
-    unsigned long _DataLen;
-    unsigned long long _NumIter;
-    bool _IsPub;
-    bool _isScan;
-    std::vector<unsigned long> _scanDataLenSizes;
-    bool _UseReadThread;
+    struct ScheduleInfo {
+        unsigned int timer;
+        void (*handlerFunction)(void);
+    };
+
+    int RunPublisher();
+    int RunSubscriber();
+    static void *waitAndExecute(void *scheduleInfo);
+    static RTIOsapiThread *SetTimeout(ScheduleInfo &info);
+
+    // Private members
+    ParameterManager _PM;
     unsigned long long _SpinLoopCount;
     unsigned long _SleepNanosec;
-    int  _LatencyCount;
-    int  _NumSubscribers;
-    int  _NumPublishers;
-    unsigned long _InstanceCount;
     IMessaging *_MessagingImpl;
-    char **_MessagingArgv;
-    int _MessagingArgc;
-    bool _LatencyTest;
-    bool _IsReliable;
-    int _pubRate;
-    bool _pubRateMethodSpin;
-    bool _isKeyed;
-    unsigned long _useUnbounded;
-    unsigned int _executionTime;
-    bool _displayWriterStats;
-    bool _useCft;
     static const Perftest_ProductVersion_t _version;
 
-    // Priorities for the threads used by perftest and domain participant
-    PerftestThreadPriorities _threadPriorities;
-
-  private:
-    static void SetTimeout(unsigned int executionTimeInSeconds, bool _isScan = false);
+    ThreadPriorities _threadPriorities;
 
     /* The following three members are used in a static callback
        and so they have to be static */
     static bool _testCompleted;
     static bool _testCompleted_scan;
-  #ifdef RTI_WIN32
-    static HANDLE _hTimerQueue;
-    static HANDLE _hTimer;
-  #endif
 
   public:
-    static int  _SubID;
-    static int  _PubID;
-    static bool _PrintIntervals;
-    static bool _showCpu;
-
     static struct RTIClock *_Clock;
     static struct RTINtpTime _ClockTime_aux;
     static RTI_UINT64 _Clock_sec;
     static RTI_UINT64 _Clock_usec;
 
-  #ifdef RTI_WIN32
+  #if defined(RTI_WIN32) || defined(RTI_INTIME)
     static LARGE_INTEGER _ClockFrequency;
   #endif
 
@@ -169,17 +121,9 @@ private:
      */
     static const unsigned long LATENCY_RESET_VALUE = ULONG_MAX;
 
-   public:
-    static unsigned long long GetTimeUsec();
-
-
-  #ifdef RTI_WIN32
-    static VOID CALLBACK Timeout(PVOID lpParam, BOOLEAN timerOrWaitFired);
-    static VOID CALLBACK Timeout_scan(PVOID lpParam, BOOLEAN timerOrWaitFired);
-  #else
-    static void Timeout(int sign);
-    static void Timeout_scan(int sign);
-  #endif
+    int  subID;
+    bool printIntervals;
+    bool showCpu;
 
 };
 

@@ -758,7 +758,7 @@ namespace PerformanceTest {
                 "\t                          default 1\n" +
                 "\t-scan <size1>:<size2>:...:<sizeN> - Run test in scan mode, traversing\n" +
                 "\t                                    a range of sample data sizes from\n" +
-                "\t                                    [32,63000] or [63001,2147483128] bytes,\n" +
+                "\t                                    [32,63000] or [63001,2147482620] bytes,\n" +
                 "\t                                    in the case that you are using large data or not.\n" +
                 "\t                                    The list of sizes is optional.\n" +
                 "\t                                    Default values are '32:64:128:256:512:1024:2048:4096:8192:16384:32768:63000'\n" +
@@ -1391,8 +1391,12 @@ namespace PerformanceTest {
                 } else { // < 0 (Meaning, Disabled by RTI Perftest)
                     sb.Append("\"Disabled by RTI Perftest.\"\n");
                     if (batchSize == -1) {
-                        sb.Append("\t\t  BatchSize is smaller than 2 times\n");
-                        sb.Append("\t\t  the minimum sample size.\n");
+                        if (_LatencyTest) {
+                            sb.Append("\t\t  BatchSize disabled for a Latency Test\n");
+                        } else {
+                            sb.Append("\t\t  BatchSize is smaller than 2 times\n");
+                            sb.Append("\t\t  the minimum sample size.\n");
+                        }
                     }
                     if (batchSize == -2) {
                         sb.Append("\t\t  BatchSize cannot be used with\n");
@@ -1423,6 +1427,10 @@ namespace PerformanceTest {
                     sb.Append("\tNumber of samples: " );
                     sb.Append(_NumIter);
                     sb.Append("\n");
+                }
+            } else {
+                if (_DataLen > (ulong)MAX_SYNCHRONOUS_SIZE.VALUE) {
+                    sb.Append("\tExpecting Large Data Type\n");
                 }
             }
 
@@ -2580,19 +2588,25 @@ namespace PerformanceTest {
             Perftest_ProductVersion_t perftestV = GetPerftestVersion();
             ProductVersion_t ddsV = GetDDSVersion();
 
-            Console.Write(
-                    "RTI Perftest "
-                    + perftestV.major + "."
-                    + perftestV.minor + "."
-                    + perftestV.release);
-            if (perftestV.revision != 0) {
-                Console.Write("." + perftestV.revision);
+            if (perftestV.major == 9
+                    && perftestV.minor == 9
+                    && perftestV.release == 9) {
+                Console.Write("RTI Perftest Master");
+            } else {
+                Console.Write(
+                        "RTI Perftest "
+                        + perftestV.major + "."
+                        + perftestV.minor + "."
+                        + perftestV.release);
+                if (perftestV.revision != 0) {
+                    Console.Write("." + perftestV.revision);
+                }
+                Console.Write(
+                        " (RTI Connext DDS: "
+                        + ddsV.major + "."
+                        + ddsV.minor + "."
+                        + ddsV.release + ")\n");
             }
-            Console.Write(
-                    " (RTI Connext DDS: "
-                    + ddsV.major + "."
-                    + ddsV.minor + "."
-                    + ddsV.release + ")\n");
         }
 
         public struct Perftest_ProductVersion_t
@@ -2651,7 +2665,7 @@ namespace PerformanceTest {
         public const int timeout_wait_for_ack_sec = 0;
         public const uint timeout_wait_for_ack_nsec = 10000000;
         public static readonly Perftest_ProductVersion_t _version =
-                new Perftest_ProductVersion_t(9, 9, 9, 9);
+                new Perftest_ProductVersion_t(3, 0, 1, 0);
 
 
         /*
