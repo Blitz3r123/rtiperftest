@@ -134,7 +134,7 @@ public final class PerfTest {
     ArrayList<Long> losses = new ArrayList<Long>();
 
     // Filename for writing to file
-    String fileName = "";
+    private String fileName;
 
     // Set the default values into the array _scanDataLenSizes vector
     public void set_default_scan_values(){
@@ -241,7 +241,7 @@ public final class PerfTest {
         if (_isPub) {
             publisher();
         } else {
-            try(PrintWriter pwriter = new PrintWriter(new FileOutputStream(new File(filename), true))){
+            try(PrintWriter pwriter = new PrintWriter(new FileOutputStream(new File(fileName), true))){
                 StringBuilder sb = new StringBuilder();
                 subscriber();
                 int throughputCount = 0;
