@@ -31,6 +31,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
+// Custom Imports
+import java.io.*;
+import java.lang.*;
+import java.util.*;
+
 // ===========================================================================
 
 /**
@@ -121,6 +126,15 @@ public final class PerfTest {
     /* Indicates when the test should exit due to timeout */
     private boolean testCompleted = false;
     private boolean testCompletedScan = true;
+
+    // Arrays for storing results for later use when writing to file
+    ArrayList<Long> packets = new ArrayList<Long>();
+    ArrayList<Long> packetsPerSec = new ArrayList<Long>();
+    ArrayList<Double> throughputs = new ArrayList<Double>();
+    ArrayList<Long> losses = new ArrayList<Long>();
+
+    // Filename for writing to file
+    String fileName;
 
     // Set the default values into the array _scanDataLenSizes vector
     public void set_default_scan_values(){
@@ -227,7 +241,39 @@ public final class PerfTest {
         if (_isPub) {
             publisher();
         } else {
-            subscriber();
+            try(PrintWriter pwriter = new PrintWriter(new FileOutputStream(new File(filename), true))){
+                StringBuilder sb = new StringBuilder();
+                subscriber();
+                int throughputCount = 0;
+                double throughputTotal = 0;
+                double packetsReceivedTotal = 0;
+                double packetsPerSecTotal = 0;
+
+                for(int i = 0; i < packets.size(); i++){
+                    sb.append(" , ");
+                    sb.append(packets.get(i) + " , ");
+                    sb.append(packetsPerSec.get(i) + " , ");
+                    sb.append(throughputs.get(i) + " , ");
+                    sb.append(losses.get(i) + " , ");
+                    sb.append('\n');
+
+                    throughputTotal += throughputs.get(i);
+                    packetsReceivedTotal += packets.get(i);
+                    packetsPerSecTotal += packetsPerSec.get(i);
+                    throughputCount++;
+                }
+
+                sb.append("Averages: ,");
+                sb.append(packetsReceivedTotal / throughputCount + " ,");
+                sb.append(packetsPerSecTotal / throughputCount + " ,");
+                sb.append(throughputTotal / throughputCount + " ,");
+                sb.append('\n');
+
+                pwriter.write(sb.toString());
+                pwriter.close();                
+            }catch(FileNotFoundException e){
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -379,6 +425,14 @@ public final class PerfTest {
             else if ("-sub".toLowerCase().startsWith(argv[i].toLowerCase()))
             {
                 _isPub = false;
+            }
+            else if("-fileName".toLowerCase().startsWith(argv[i].toLowerCase()))
+            {   
+                if ((i == (argc - 1)) || argv[++i].startsWith("-")) {
+                    System.err.print("Missing <name of file> after -fileName\n");
+                    return false;
+                }
+                fileName = argv[i] + ".csv";
             }
             else if ("-sidMultiSubTest".toLowerCase().startsWith(argv[i].toLowerCase()))
             {
@@ -1060,6 +1114,11 @@ public final class PerfTest {
                             reader_listener.missingPacketsPercent
                     );
                 }
+
+                packets.add(last_msgs);
+                packetsPerSec.add(mps);
+                throughputs.add(bps * 8.0 / 1000.0 / 1000.0);
+                losses.add(reader_listener.missingPackets);
             }
         }
 

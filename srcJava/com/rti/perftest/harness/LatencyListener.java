@@ -7,6 +7,13 @@ package com.rti.perftest.harness;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.sqrt;
+
+// Custom imports
+import java.lang.*;
+import java.io.*;
+
+import java.io.FileOutputStream;
+import java.io.Writer;
 import java.util.Arrays;
 
 import com.rti.perftest.harness.PerfTest;
@@ -210,20 +217,60 @@ import com.rti.perftest.TestMessage;
             outputCpu = CpuMonitor.get_cpu_average();
         }
 
-        System.out.printf(
-                "Length: %1$5d  Latency: Ave %2$6.0f us  Std %3$6.1f us  " +
-                "Min %4$6d us  Max %5$6d us  50%% %6$6d us  90%% %7$6d us  99%% %8$6d us  99.99%% %9$6d us  99.9999%% %10$6d us" + outputCpu + "\n",
-                _lastDataLength + PerfTest.OVERHEAD_BYTES,
-                latency_ave,
-                latency_std,
-                _latencyMin,
-                _latencyMax,
-                _latencyHistory[(int)(_count * 50 / (double)100)],
-                _latencyHistory[(int)(_count * 90 / (double)100)],
-                _latencyHistory[(int)(_count * 99 / (double)100)],
-                _latencyHistory[(int)(_count * (9999.0 / (double)10000))],
-                _latencyHistory[(int)(_count * (999999.0 / (double)1000000))]
-        );
+        // System.out.printf(
+        //         "Length: %1$5d  Latency: Ave %2$6.0f us  Std %3$6.1f us  " +
+        //         "Min %4$6d us  Max %5$6d us  50%% %6$6d us  90%% %7$6d us  99%% %8$6d us  99.99%% %9$6d us  99.9999%% %10$6d us" + outputCpu + "\n",
+        //         _lastDataLength + PerfTest.OVERHEAD_BYTES,
+        //         latency_ave,
+        //         latency_std,
+        //         _latencyMin,
+        //         _latencyMax,
+        //         _latencyHistory[(int)(_count * 50 / (double)100)],
+        //         _latencyHistory[(int)(_count * 90 / (double)100)],
+        //         _latencyHistory[(int)(_count * 99 / (double)100)],
+        //         _latencyHistory[(int)(_count * (9999.0 / (double)10000))],
+        //         _latencyHistory[(int)(_count * (999999.0 / (double)1000000))]
+        // );
+
+        System.out.println("Writing to file...");
+
+        try(PrintWriter pwriter = new PrintWriter(new FileOutputStream(new File("pub.csv"), true))){
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("One-Way Latency (us):");
+            sb.append('\n');
+
+            double latencyTotal = 0;
+            int latencyCount = 0;
+            int nonZeroCount = 0;
+            
+            for(int k = 0; k < _latencyHistory.length; k++){
+                sb.append(_latencyHistory[k]);
+                sb.append('\n');
+
+                latencyTotal += _latencyHistory[k];
+                latencyCount++;
+                if(_latencyHistory[k] > 0){
+                    nonZeroCount++;
+                }
+            }
+
+            sb.append('\n');
+            sb.append("Average: ,");
+            sb.append(latencyTotal / latencyCount);
+            sb.append('\n');
+            sb.append("Non Zero Average: ,");
+            sb.append(latencyTotal / nonZeroCount);
+            sb.append('\n');
+            sb.append("Sample Count: ,");
+            sb.append(_latencyHistory.length);
+
+            pwriter.write(sb.toString());
+            pwriter.flush();
+        }catch(FileNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+
         System.out.flush();
         _latencySum = 0;
         _latencySumSquare = 0;
