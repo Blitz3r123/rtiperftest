@@ -134,7 +134,7 @@ public final class PerfTest {
     ArrayList<Long> losses = new ArrayList<Long>();
 
     // Filename for writing to file
-    String fileName;
+    String fileName = "";
 
     // Set the default values into the array _scanDataLenSizes vector
     public void set_default_scan_values(){
