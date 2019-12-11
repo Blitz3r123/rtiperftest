@@ -249,11 +249,12 @@ public final class PerfTest {
                 double packetsReceivedTotal = 0;
                 double packetsPerSecTotal = 0;
 
-                sb.append(",");
+                sb.append(" , ");
                 sb.append("Total Packets:,");
                 sb.append("Packets/s:,");
                 sb.append("Throughput (mbps):,");
                 sb.append("Packets Lost:,");
+                sb.append('\n');
 
                 for(int i = 0; i < packets.size(); i++){
                     sb.append(" , ");
