@@ -182,14 +182,14 @@ import com.rti.perftest.TestMessage;
             double latency_std = sqrt(
                 (double)_latencySumSquare / (double)_count - (latency_ave * latency_ave));
 
-            System.out.printf(
-                "One-Way Latency: %1$6d us  Ave %2$6.0f us  Std %3$6.1f us  Min %4$6d us  Max %5$6d" + outputCpu + "\n",
-                latency,
-                latency_ave,
-                latency_std,
-                _latencyMin,
-                _latencyMax
-            );
+            // System.out.printf(
+            //     "One-Way Latency: %1$6d us  Ave %2$6.0f us  Std %3$6.1f us  Min %4$6d us  Max %5$6d" + outputCpu + "\n",
+            //     latency,
+            //     latency_ave,
+            //     latency_std,
+            //     _latencyMin,
+            //     _latencyMax
+            // );
         }
         if (_writer != null) {
             _writer.notifyPingResponse();
