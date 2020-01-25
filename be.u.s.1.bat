@@ -1,1 +1,0 @@
-start cmd /k perftest_java.bat -sub -dataLen 100 -domain 2 -fileName sub -bestEffort  
