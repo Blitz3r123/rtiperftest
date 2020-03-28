@@ -27,3 +27,5 @@
 *.VC.opendb
 doc
 srcDoc/_build
+.DS_Store
+/DS_Store
