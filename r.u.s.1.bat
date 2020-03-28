@@ -1,1 +1,0 @@
-start cmd /k perftest_java.bat -sub -dataLen 100 -domain 4 -fileName sub    
